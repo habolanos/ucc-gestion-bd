@@ -453,7 +453,7 @@
     </hop>
     <hop>
       <from>Text file output</from>
-      <to>Zip file</to>
+      <to>Write to log</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -1820,8 +1820,8 @@
     </GUI>
   </step>
   <step>
-    <name>Zip file</name>
-    <type>ZipFile</type>
+    <name>Write to log</name>
+    <type>WriteToLog</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1830,15 +1830,16 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <sourcefilenamefield/>
-    <targetfilenamefield>outcome_comprimido</targetfilenamefield>
-    <baseFolderField/>
-    <operation_type/>
-    <addresultfilenames>N</addresultfilenames>
-    <overwritezipentry>Y</overwritezipentry>
-    <createparentfolder>N</createparentfolder>
-    <keepsourcefolder>N</keepsourcefolder>
-    <movetofolderfield/>
+    <loglevel>log_level_basic</loglevel>
+    <displayHeader>Y</displayHeader>
+    <limitRows>N</limitRows>
+    <limitRowsNumber>0</limitRowsNumber>
+    <logmessage/>
+    <fields>
+      <field>
+        <name>id</name>
+      </field>
+    </fields>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1848,7 +1849,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>832</xloc>
+      <xloc>848</xloc>
       <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
