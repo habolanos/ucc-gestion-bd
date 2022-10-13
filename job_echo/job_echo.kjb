@@ -287,7 +287,7 @@
   <shared_objects_file/>
   <entries>
     <entry>
-      <name>Transformation</name>
+      <name>Transformation echo</name>
       <description/>
       <type>TRANS</type>
       <attributes/>
@@ -363,7 +363,7 @@
   <hops>
     <hop>
       <from>Start</from>
-      <to>Transformation</to>
+      <to>Transformation echo</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -371,7 +371,7 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Transformation</from>
+      <from>Transformation echo</from>
       <to>Success</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
