@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Rows>
+<Row><zipCode>32822</zipCode> <listLatLonOut>&lt;?xml version='1.0'?>&lt;dwml version='1.0' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://graphical.weather.gov/xml/DWMLgen/schema/DWML.xsd'>&lt;latLonList>28.5047,-81.3742&lt;/latLonList>&lt;/dwml></listLatLonOut></Row>
+</Rows>
