@@ -436,6 +436,116 @@
   </info>
   <notepads>
   </notepads>
+  <connection>
+    <name>oracle-docker</name>
+    <server>localhost</server>
+    <type>ORACLE</type>
+    <access>Native</access>
+    <database>XE</database>
+    <port>1521</port>
+    <username>system</username>
+    <password>Encrypted 2be98afc86aa7f2e4cb79a162df91a3df</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>1521</attribute>
+      </attribute>
+      <attribute>
+        <code>PREFERRED_SCHEMA_NAME</code>
+        <attribute>ORACLE</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>STRICT_NUMBER_38_INTERPRETATION</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
+  <connection>
+    <name>postgres-docker</name>
+    <server>localhost</server>
+    <type>POSTGRESQL</type>
+    <access>Native</access>
+    <database>postgres</database>
+    <port>5432</port>
+    <username>postgres</username>
+    <password>Encrypted 2be98afc86aa7f2e4bb16bd64d980aac9</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>5432</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
   <order>
     <hop>
       <from>Generate Rows</from>
@@ -453,16 +563,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>WS 02 - Get Number To Words</from>
-      <to>XML Output</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Generate Rows 3</from>
-      <to>WS 03 - Get Celcius</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>WS 03 - Get Celcius</from>
       <to>XML Output 2</to>
       <enabled>Y</enabled>
@@ -475,6 +575,16 @@
     <hop>
       <from>Generate ZipCode</from>
       <to>WS 04 - Find WGS84 Latitude and Longitude</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>WS 02 - Get Number To Words</from>
+      <to>Table output - ORACLE</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Table input - POSTGRES/GRADOS</from>
+      <to>WS 03 - Get Celcius</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -523,47 +633,35 @@
     </GUI>
   </step>
   <step>
-    <name>WS 01 - Get Country Flag</name>
-    <type>WebServiceLookup</type>
+    <name>Generate Rows 2</name>
+    <type>RowGenerator</type>
     <description/>
-    <distribute>N</distribute>
+    <distribute>Y</distribute>
     <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <wsURL>http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?wsdl</wsURL>
-    <wsOperation>CountryFlag</wsOperation>
-    <wsOperationRequest/>
-    <wsOperationNamespace>http://www.oorsprong.org/websamples.countryinfo</wsOperationNamespace>
-    <wsInFieldContainer/>
-    <wsInFieldArgument/>
-    <wsOutFieldContainer>CountryFlagResult</wsOutFieldContainer>
-    <wsOutFieldArgument>CountryFlagResult</wsOutFieldArgument>
-    <proxyHost/>
-    <proxyPort/>
-    <httpLogin/>
-    <httpPassword/>
-    <callStep>1</callStep>
-    <passingInputData>Y</passingInputData>
-    <compatible>Y</compatible>
-    <repeating_element/>
-    <reply_as_string>N</reply_as_string>
-    <fieldsIn>
+    <fields>
       <field>
-        <name>sCountryISOCode</name>
-        <wsName>sCountryISOCode</wsName>
-        <xsdType>string</xsdType>
+        <name>ubiNum</name>
+        <type>Number</type>
+        <format>#.#</format>
+        <currency/>
+        <decimal>.</decimal>
+        <group/>
+        <nullif>500</nullif>
+        <length>3</length>
+        <precision>1</precision>
+        <set_empty_string>N</set_empty_string>
       </field>
-    </fieldsIn>
-    <fieldsOut>
-      <field>
-        <name>CountryFlagResult</name>
-        <wsName>CountryFlagResult</wsName>
-        <xsdType>string</xsdType>
-      </field>
-    </fieldsOut>
+    </fields>
+    <limit>1</limit>
+    <never_ending>N</never_ending>
+    <interval_in_ms/>
+    <row_time_field/>
+    <last_time_field/>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -573,8 +671,104 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
-      <yloc>32</yloc>
+      <xloc>80</xloc>
+      <yloc>138</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Generate ZipCode</name>
+    <type>RowGenerator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>zipCode</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>32822</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <limit>1</limit>
+    <never_ending>N</never_ending>
+    <interval_in_ms/>
+    <row_time_field/>
+    <last_time_field/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>80</xloc>
+      <yloc>350</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Table output - ORACLE</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>oracle-docker</connection>
+    <schema>SYSTEM</schema>
+    <table>NUMBERS_TO_WORDS</table>
+    <commit>1000</commit>
+    <truncate>Y</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>UBINUM</column_name>
+        <stream_name>ubiNum</stream_name>
+      </field>
+      <field>
+        <column_name>NUMBERTOWORDSRESULT</column_name>
+        <stream_name>NumberToWordsResult</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>736</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -660,35 +854,47 @@
     </GUI>
   </step>
   <step>
-    <name>Generate Rows 2</name>
-    <type>RowGenerator</type>
+    <name>WS 01 - Get Country Flag</name>
+    <type>WebServiceLookup</type>
     <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <fields>
+    <wsURL>http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?wsdl</wsURL>
+    <wsOperation>CountryFlag</wsOperation>
+    <wsOperationRequest/>
+    <wsOperationNamespace>http://www.oorsprong.org/websamples.countryinfo</wsOperationNamespace>
+    <wsInFieldContainer/>
+    <wsInFieldArgument/>
+    <wsOutFieldContainer>CountryFlagResult</wsOutFieldContainer>
+    <wsOutFieldArgument>CountryFlagResult</wsOutFieldArgument>
+    <proxyHost/>
+    <proxyPort/>
+    <httpLogin/>
+    <httpPassword/>
+    <callStep>1</callStep>
+    <passingInputData>Y</passingInputData>
+    <compatible>Y</compatible>
+    <repeating_element/>
+    <reply_as_string>N</reply_as_string>
+    <fieldsIn>
       <field>
-        <name>ubiNum</name>
-        <type>Number</type>
-        <format>#.#</format>
-        <currency/>
-        <decimal>.</decimal>
-        <group/>
-        <nullif>500</nullif>
-        <length>3</length>
-        <precision>1</precision>
-        <set_empty_string>N</set_empty_string>
+        <name>sCountryISOCode</name>
+        <wsName>sCountryISOCode</wsName>
+        <xsdType>string</xsdType>
       </field>
-    </fields>
-    <limit>1</limit>
-    <never_ending>N</never_ending>
-    <interval_in_ms/>
-    <row_time_field/>
-    <last_time_field/>
+    </fieldsIn>
+    <fieldsOut>
+      <field>
+        <name>CountryFlagResult</name>
+        <wsName>CountryFlagResult</wsName>
+        <xsdType>string</xsdType>
+      </field>
+    </fieldsOut>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -698,8 +904,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>80</xloc>
-      <yloc>138</yloc>
+      <xloc>400</xloc>
+      <yloc>32</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -707,7 +913,7 @@
     <name>WS 02 - Get Number To Words</name>
     <type>WebServiceLookup</type>
     <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution/>
     <copies>1</copies>
     <partitioning>
@@ -760,122 +966,6 @@
     </GUI>
   </step>
   <step>
-    <name>XML Output</name>
-    <type>XMLOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <encoding>UTF-8</encoding>
-    <name_space/>
-    <xml_main_element>Rows</xml_main_element>
-    <xml_repeat_element>Row</xml_repeat_element>
-    <file>
-      <name>${Internal.Transformation.Filename.Directory}/output/outcome-ws-numbers</name>
-      <extention>xml</extention>
-      <servlet_output>N</servlet_output>
-      <do_not_open_newfile_init>N</do_not_open_newfile_init>
-      <split>N</split>
-      <add_date>N</add_date>
-      <add_time>N</add_time>
-      <SpecifyFormat>N</SpecifyFormat>
-      <omit_null_values>N</omit_null_values>
-      <date_time_format/>
-      <add_to_result_filenames>N</add_to_result_filenames>
-      <zipped>N</zipped>
-      <splitevery>0</splitevery>
-    </file>
-    <fields>
-      <field>
-        <content_type>Element</content_type>
-        <name>ubiNum</name>
-        <element/>
-        <type>None</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <length>3</length>
-        <precision>1</precision>
-      </field>
-      <field>
-        <content_type>Element</content_type>
-        <name>NumberToWordsResult</name>
-        <element/>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>736</xloc>
-      <yloc>138</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Generate Rows 3</name>
-    <type>RowGenerator</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <name>degreesCelcius</name>
-        <type>Number</type>
-        <format>#.#</format>
-        <currency/>
-        <decimal>.</decimal>
-        <group/>
-        <nullif>38</nullif>
-        <length>3</length>
-        <precision>1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-    </fields>
-    <limit>1</limit>
-    <never_ending>N</never_ending>
-    <interval_in_ms/>
-    <row_time_field/>
-    <last_time_field/>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>80</xloc>
-      <yloc>244</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>WS 03 - Get Celcius</name>
     <type>WebServiceLookup</type>
     <description/>
@@ -888,7 +978,7 @@
     </partitioning>
     <wsURL>http://webservices.daehosting.com/services/TemperatureConversions.wso?WSDL</wsURL>
     <wsOperation>CelsiusToFahrenheit</wsOperation>
-    <wsOperationRequest>CelsiusToFahrenheit</wsOperationRequest>
+    <wsOperationRequest/>
     <wsOperationNamespace>http://webservices.daehosting.com/temperature</wsOperationNamespace>
     <wsInFieldContainer/>
     <wsInFieldArgument/>
@@ -905,7 +995,7 @@
     <reply_as_string>N</reply_as_string>
     <fieldsIn>
       <field>
-        <name>degreesCelcius</name>
+        <name>grado</name>
         <wsName>nCelsius</wsName>
         <xsdType>decimal</xsdType>
       </field>
@@ -927,78 +1017,6 @@
     </remotesteps>
     <GUI>
       <xloc>400</xloc>
-      <yloc>244</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>XML Output 2</name>
-    <type>XMLOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <encoding>UTF-8</encoding>
-    <name_space/>
-    <xml_main_element>Rows</xml_main_element>
-    <xml_repeat_element>Row</xml_repeat_element>
-    <file>
-      <name>${Internal.Transformation.Filename.Directory}/output/outcome-ws-celsius</name>
-      <extention>xml</extention>
-      <servlet_output>N</servlet_output>
-      <do_not_open_newfile_init>N</do_not_open_newfile_init>
-      <split>N</split>
-      <add_date>N</add_date>
-      <add_time>N</add_time>
-      <SpecifyFormat>N</SpecifyFormat>
-      <omit_null_values>N</omit_null_values>
-      <date_time_format/>
-      <add_to_result_filenames>N</add_to_result_filenames>
-      <zipped>N</zipped>
-      <splitevery>0</splitevery>
-    </file>
-    <fields>
-      <field>
-        <content_type>Element</content_type>
-        <name>degreesCelcius</name>
-        <element/>
-        <type>None</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <length>3</length>
-        <precision>1</precision>
-      </field>
-      <field>
-        <content_type>Element</content_type>
-        <name>CelsiusToFahrenheitResult</name>
-        <element/>
-        <type>BigNumber</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>736</xloc>
       <yloc>244</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1060,8 +1078,8 @@
     </GUI>
   </step>
   <step>
-    <name>Generate ZipCode</name>
-    <type>RowGenerator</type>
+    <name>XML Output 2</name>
+    <type>XMLOutput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1070,25 +1088,53 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
+    <encoding>UTF-8</encoding>
+    <name_space/>
+    <xml_main_element>Rows</xml_main_element>
+    <xml_repeat_element>Row</xml_repeat_element>
+    <file>
+      <name>${Internal.Transformation.Filename.Directory}/output/outcome-ws-celsius</name>
+      <extention>xml</extention>
+      <servlet_output>N</servlet_output>
+      <do_not_open_newfile_init>N</do_not_open_newfile_init>
+      <split>N</split>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <omit_null_values>N</omit_null_values>
+      <date_time_format/>
+      <add_to_result_filenames>N</add_to_result_filenames>
+      <zipped>N</zipped>
+      <splitevery>0</splitevery>
+    </file>
     <fields>
       <field>
-        <name>zipCode</name>
-        <type>String</type>
+        <content_type>Element</content_type>
+        <name>grado</name>
+        <element/>
+        <type>None</type>
         <format/>
         <currency/>
         <decimal/>
         <group/>
-        <nullif>32822</nullif>
+        <nullif/>
+        <length>3</length>
+        <precision>1</precision>
+      </field>
+      <field>
+        <content_type>Element</content_type>
+        <name>CelsiusToFahrenheitResult</name>
+        <element/>
+        <type>BigNumber</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
         <length>-1</length>
         <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
       </field>
     </fields>
-    <limit>1</limit>
-    <never_ending>N</never_ending>
-    <interval_in_ms/>
-    <row_time_field/>
-    <last_time_field/>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1098,8 +1144,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>80</xloc>
-      <yloc>350</yloc>
+      <xloc>736</xloc>
+      <yloc>244</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1172,6 +1218,67 @@
     <GUI>
       <xloc>736</xloc>
       <yloc>350</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Table input - POSTGRES/GRADOS</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>postgres-docker</connection>
+    <sql>SELECT
+  grado
+FROM "public".grados
+</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <cached_row_meta_active>Y</cached_row_meta_active>
+    <row-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>grado</name>
+        <length>3</length>
+        <precision>1</precision>
+        <origin>Table input</origin>
+        <comments>grado</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>America/Bogota</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+    </row-meta>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>80</xloc>
+      <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

@@ -1,4 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <Rows>
-<Row><degreesCelcius> 38.0</degreesCelcius> <CelsiusToFahrenheitResult>100.4</CelsiusToFahrenheitResult></Row>
+<Row><grado> 30.5</grado> <CelsiusToFahrenheitResult>86.9</CelsiusToFahrenheitResult></Row>
+<Row><grado> 25.0</grado> <CelsiusToFahrenheitResult>77.0</CelsiusToFahrenheitResult></Row>
+<Row><grado> 15.0</grado> <CelsiusToFahrenheitResult>59.0</CelsiusToFahrenheitResult></Row>
 </Rows>
