@@ -467,6 +467,16 @@
       <to>XML Output 2</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>WS 04 - Find WGS84 Latitude and Longitude</from>
+      <to>XML Output 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Generate ZipCode</from>
+      <to>WS 04 - Find WGS84 Latitude and Longitude</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
   <step>
     <name>Generate Rows</name>
@@ -507,7 +517,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>126</xloc>
+      <xloc>128</xloc>
       <yloc>113</yloc>
       <draw>Y</draw>
     </GUI>
@@ -563,8 +573,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>306</xloc>
-      <yloc>113</yloc>
+      <xloc>448</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -644,8 +654,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>544</xloc>
-      <yloc>113</yloc>
+      <xloc>784</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -744,7 +754,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>304</xloc>
+      <xloc>448</xloc>
       <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
@@ -816,7 +826,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>544</xloc>
+      <xloc>784</xloc>
       <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
@@ -916,7 +926,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>304</xloc>
+      <xloc>448</xloc>
       <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
@@ -988,8 +998,180 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>544</xloc>
+      <xloc>784</xloc>
       <yloc>336</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>WS 04 - Find WGS84 Latitude and Longitude</name>
+    <type>WebServiceLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <wsURL>http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl</wsURL>
+    <wsOperation>LatLonListZipCode</wsOperation>
+    <wsOperationRequest/>
+    <wsOperationNamespace>http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl</wsOperationNamespace>
+    <wsInFieldContainer/>
+    <wsInFieldArgument/>
+    <wsOutFieldContainer>listLatLonOut</wsOutFieldContainer>
+    <wsOutFieldArgument>listLatLonOut</wsOutFieldArgument>
+    <proxyHost/>
+    <proxyPort/>
+    <httpLogin/>
+    <httpPassword/>
+    <callStep>1</callStep>
+    <passingInputData>Y</passingInputData>
+    <compatible>Y</compatible>
+    <repeating_element/>
+    <reply_as_string>N</reply_as_string>
+    <fieldsIn>
+      <field>
+        <name>zipCode</name>
+        <wsName>zipCodeList</wsName>
+        <xsdType>zipCodeListType</xsdType>
+      </field>
+    </fieldsIn>
+    <fieldsOut>
+      <field>
+        <name>listLatLonOut</name>
+        <wsName>listLatLonOut</wsName>
+        <xsdType>listLatLonType</xsdType>
+      </field>
+    </fieldsOut>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>448</xloc>
+      <yloc>432</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Generate ZipCode</name>
+    <type>RowGenerator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>zipCode</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>32822</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <limit>1</limit>
+    <never_ending>N</never_ending>
+    <interval_in_ms/>
+    <row_time_field/>
+    <last_time_field/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>128</xloc>
+      <yloc>432</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>XML Output 3</name>
+    <type>XMLOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <encoding>UTF-8</encoding>
+    <name_space/>
+    <xml_main_element>Rows</xml_main_element>
+    <xml_repeat_element>Row</xml_repeat_element>
+    <file>
+      <name>${Internal.Transformation.Filename.Directory}/output/outcome-ws-latitud</name>
+      <extention>xml</extention>
+      <servlet_output>N</servlet_output>
+      <do_not_open_newfile_init>N</do_not_open_newfile_init>
+      <split>N</split>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <omit_null_values>N</omit_null_values>
+      <date_time_format/>
+      <add_to_result_filenames>N</add_to_result_filenames>
+      <zipped>N</zipped>
+      <splitevery>0</splitevery>
+    </file>
+    <fields>
+      <field>
+        <content_type>Element</content_type>
+        <name>zipCode</name>
+        <element/>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <content_type>Element</content_type>
+        <name>listLatLonOut</name>
+        <element/>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>784</xloc>
+      <yloc>432</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
