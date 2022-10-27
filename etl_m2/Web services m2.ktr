@@ -447,6 +447,16 @@
       <to>Text file output</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>Generate Rows 2</from>
+      <to>WS 02 - Get Number To Words</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>WS 02 - Get Number To Words</from>
+      <to>XML Output</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
   <step>
     <name>Generate Rows</name>
@@ -626,6 +636,178 @@
     <GUI>
       <xloc>544</xloc>
       <yloc>113</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Generate Rows 2</name>
+    <type>RowGenerator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>ubiNum</name>
+        <type>Number</type>
+        <format>#.#</format>
+        <currency/>
+        <decimal>.</decimal>
+        <group/>
+        <nullif>500</nullif>
+        <length>3</length>
+        <precision>1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <limit>1</limit>
+    <never_ending>N</never_ending>
+    <interval_in_ms/>
+    <row_time_field/>
+    <last_time_field/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>128</xloc>
+      <yloc>224</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>WS 02 - Get Number To Words</name>
+    <type>WebServiceLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <wsURL>https://www.dataaccess.com/webservicesserver/NumberConversion.wso?wsdl</wsURL>
+    <wsOperation>NumberToWords</wsOperation>
+    <wsOperationRequest/>
+    <wsOperationNamespace>http://www.dataaccess.com/webservicesserver/</wsOperationNamespace>
+    <wsInFieldContainer/>
+    <wsInFieldArgument/>
+    <wsOutFieldContainer>NumberToWordsResult</wsOutFieldContainer>
+    <wsOutFieldArgument>NumberToWordsResult</wsOutFieldArgument>
+    <proxyHost/>
+    <proxyPort/>
+    <httpLogin/>
+    <httpPassword/>
+    <callStep>1</callStep>
+    <passingInputData>Y</passingInputData>
+    <compatible>Y</compatible>
+    <repeating_element/>
+    <reply_as_string>N</reply_as_string>
+    <fieldsIn>
+      <field>
+        <name>ubiNum</name>
+        <wsName>ubiNum</wsName>
+        <xsdType>unsignedLong</xsdType>
+      </field>
+    </fieldsIn>
+    <fieldsOut>
+      <field>
+        <name>NumberToWordsResult</name>
+        <wsName>NumberToWordsResult</wsName>
+        <xsdType>string</xsdType>
+      </field>
+    </fieldsOut>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>304</xloc>
+      <yloc>224</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>XML Output</name>
+    <type>XMLOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <encoding>UTF-8</encoding>
+    <name_space/>
+    <xml_main_element>Rows</xml_main_element>
+    <xml_repeat_element>Row</xml_repeat_element>
+    <file>
+      <name>${Internal.Transformation.Filename.Directory}/output/outcome-ws-numbers</name>
+      <extention>xml</extention>
+      <servlet_output>N</servlet_output>
+      <do_not_open_newfile_init>N</do_not_open_newfile_init>
+      <split>N</split>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <omit_null_values>N</omit_null_values>
+      <date_time_format/>
+      <add_to_result_filenames>N</add_to_result_filenames>
+      <zipped>N</zipped>
+      <splitevery>0</splitevery>
+    </file>
+    <fields>
+      <field>
+        <content_type>Element</content_type>
+        <name>ubiNum</name>
+        <element/>
+        <type>None</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <length>3</length>
+        <precision>1</precision>
+      </field>
+      <field>
+        <content_type>Element</content_type>
+        <name>NumberToWordsResult</name>
+        <element/>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>544</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
